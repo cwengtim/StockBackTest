@@ -1,0 +1,25 @@
+[project]
+name = "pythonproject"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (>=2.2.4,<3.0.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "streamlit (>=1.43.2,<2.0.0)",
+    "backtrader (>=1.9.78.123,<2.0.0.0)",
+    "yfinance (>=0.2.61,<0.3.0)",
+    "matplotlib (>=3.10.3,<4.0.0)",
+    "jupyterlab (>=4.4.3,<5.0.0)",
+    "backtesting (>=0.6.4,<0.7.0)",
+    "tushare (>=1.4.21,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
