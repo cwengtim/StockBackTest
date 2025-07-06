@@ -45,13 +45,14 @@ def get_data(ticker='1810.HK', start='2024-01-01', end='2025-05-20'):
 # Set up Cerebro
 cerebro = bt.Cerebro()
 # Load or download data
-stocks = ['3690.HK', '9988.HK', '9618.HK']
+stocks = ['9988.HK']
 for stock in stocks:
-    data = get_data(ticker=stock, start='2023-01-01', end='2025-06-06')
+    data = get_data(ticker=stock, start='2023-01-01', end='2025-07-05')
     data_feed = bt.feeds.PandasData(dataname=data, name=stock)
     cerebro.adddata(data_feed)
 #cerebro.addstrategy(MomentumStrategy)
-cerebro.addstrategy(SMACrossover)
+#cerebro.addstrategy(SMACrossover)
+cerebro.addstrategy(MACDStrategy)
 #cerebro.addstrategy(KDJStrategy)
 #cerebro.addstrategy(ElliottWaveStrategy)
 cerebro.broker.setcash(10000.0)

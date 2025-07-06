@@ -270,3 +270,46 @@ class KDJStrategy(BaseStrategy):
     def log(self, txt):
         dt = self.datas[0].datetime.date(0)
         print(f'{dt}: {txt}')
+
+
+class MACDStrategy(BaseStrategy):
+    params = (
+        ('macd1', 12),  # Fast EMA period
+        ('macd2', 26),  # Slow EMA period
+        ('signal', 9),  # Signal line period
+        ('size', 100),  # Number of shares to trade
+    )
+
+    def __init__(self):
+        # Initialize MACD indicator
+        self.macd = bt.indicators.MACD(
+            self.data.close,
+            period_me1=self.params.macd1,
+            period_me2=self.params.macd2,
+            period_signal=self.params.signal
+        )
+        # Cross of MACD line and Signal line
+        self.crossover = bt.indicators.CrossOver(self.macd.macd, self.macd.signal)
+        # Track position
+        self.order = None
+
+    def next(self):
+        # If an order is pending, don't place a new one
+        if self.order:
+            return
+
+        # Check if we are in the market
+        if not self.position:
+            # Buy condition: MACD crosses above Signal
+            if self.crossover > 0:
+                self.log(f'BUY CREATE at {self.data.close[0]:.2f}')
+                self.order = self.buy(size=self.params.size)
+        else:
+            # Sell condition: MACD crosses below Signal
+            if self.crossover < 0:
+                self.log(f'SELL CREATE at {self.data.close[0]:.2f}')
+                self.order = self.sell(size=self.params.size)
+
+    def stop(self):
+        # Log final portfolio value
+        self.log(f'Final Portfolio Value: {self.broker.getvalue():.2f}')
